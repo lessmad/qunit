@@ -494,17 +494,21 @@ QUnit = {
 
 	stop: function( count ) {
     var asyncTest = config.current.module + " " + config.current.testName,
-    _started = config.current.started;
+        _started = config.current.started,
+        _timerStarted;
 		config.semaphore += count || 1;
 		config.blocking = true;
 
 		if ( config.testTimeout && defined.setTimeout ) {
 			clearTimeout( config.timeout );
+      _timerStarted = +(new Date());
 			config.timeout = setTimeout(function() {
-        var now = +(new Date());
 				QUnit.ok( false, "Test timed out - " + asyncTest);
-        QUnit.ok(false, _started + " .. " + now + " == " + (now - _started));
-        QUnit.ok(false, config.testTimeout);
+        QUnit.ok(false, "test started: " + new Date(_started));
+        QUnit.ok(false, "test started: " + _started);
+        QUnit.ok(false, "timer started: " + _timerStarted);
+        QUnit.ok(false, "test duration:" + (+(new Date()) - _started));
+        QUnit.ok(false, "config timeout: " + config.testTimeout);
 				config.semaphore = 1;
 				QUnit.start();
 			}, config.testTimeout );
