@@ -493,13 +493,14 @@ QUnit = {
 	},
 
 	stop: function( count ) {
+    var asyncTest = config.current.module + " " + config.current.testName;
 		config.semaphore += count || 1;
 		config.blocking = true;
 
 		if ( config.testTimeout && defined.setTimeout ) {
 			clearTimeout( config.timeout );
 			config.timeout = setTimeout(function() {
-				QUnit.ok( false, "Test timed out" );
+				QUnit.ok( false, "Test timed out - " + asyncTest);
 				config.semaphore = 1;
 				QUnit.start();
 			}, config.testTimeout );
